@@ -1,0 +1,85 @@
+---
+title: "Job Dashboard Additions"
+author: "Daniel Lane"
+date: "4/14/2022"
+output: html_document
+---
+
+# Salary Scraper
+  
+```{r}
+  # Get Salary
+  salary <- NA # vector for descriptions
+    
+  # function to get salary from each link
+  get_salary <- function(link){ 
+    page <- xml2::read_html(link)
+    salary <- page %>%
+        html_nodes('.jobsearch-JobDescriptionSection-sectionItem') %>%
+        html_nodes('span') %>%
+        html_text()
+     ifelse(length(salary) > 0, salary, NA) # if no salary, replace w NA
+  }
+for(j in seq_along(link)) {
+  salary[j] <- get_salary(link[j])
+  Sys.sleep(1)
+}
+  
+```
+
+
+### MSBA - Ranked Results
+
+```{r}
+new_data %>% 
+  filter(Program == "MSBA") %>%
+  group_by(Search) %>% 
+  ggplot(aes(Search))+
+    geom_bar()+
+    theme_minimal()+
+    labs(title = "MSBA Count of Job Search Results", y = "count")+
+    coord_flip()
+```
+
+
+### MSIS - Ranked Results
+
+```{r}
+new_data %>% 
+  filter(Program == "MSIS") %>%
+  group_by(Search) %>% 
+  ggplot(aes(Search))+
+    geom_bar()+
+    theme_minimal()+
+    labs(title = "MSIS Count of Job Search Results", y = "count")+
+    coord_flip()
+```
+
+
+### MSCM - Ranked Results
+
+```{r}
+new_data %>% 
+  filter(Program == "MSCM") %>%
+  group_by(Search) %>% 
+  ggplot(aes(Search))+
+    geom_bar()+
+    theme_minimal()+
+    labs(title = "MSCM Count of Job Search Results", y = "count")+
+    coord_flip()
+```
+
+
+### Number of Jobs per Employer
+
+```{r}
+new_data %>% 
+  group_by(Company) %>% 
+  filter(n() >= 3) %>%
+  ggplot(aes(Company))+
+    geom_bar()+
+    theme_minimal()+
+    labs(title = "Employers with 3 or More Jobs Listed", y = "count")+
+    coord_flip()
+```
+
