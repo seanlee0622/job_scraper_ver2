@@ -154,7 +154,7 @@ job_scraper <- function(position = "data analyst"){  # function can take search 
 
 # write_csv(job_data, "/opt/app-data/job_data_rev1.csv")
 
-data <- read_csv("/opt/app-data/job_data_rev1.csv")
+data <- read_csv("job_data.csv")
 
 ```
 
@@ -238,7 +238,7 @@ new_data <- data %>%
   arrange(desc(Date), Company) %>% 
   na.omit
 
- write_csv(new_data, "/opt/app-data/job_data_rev1.csv")
+ write_csv(new_data, "job_data_rev1.csv")
 
 ```
 
