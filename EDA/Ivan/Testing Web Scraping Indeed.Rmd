@@ -1,0 +1,268 @@
+---
+title: "Testing Web Scraping Indeed"
+author: "Ivan Martin Espino Trejo"
+date: '2022-07-07'
+output: html_document
+---
+
+```{r}
+library(ralger)
+library(tidyverse)
+library(digest)
+library(dplyr)
+library(googledrive)
+library(googlesheets4)
+library(priceR)
+library(matrixStats)
+```
+
+```{r}
+#Getting access to google drive to use it as a server
+#googledrive::drive_auth()
+#Storing token
+#googledrive::drive_token()->access
+#saveRDS(access,"access_go.rds")
+#Getting access to google drive using my token
+drive_auth(token = readRDS("access_go.rds"))
+```
+
+```{r}
+#Search Method
+#Testing 5 pages
+base_link <- "https://www.indeed.com/jobs?q=data&l=Salt%20Lake%20City%2C%20UT&start="
+links <- paste0(base_link, 1:5)
+```
+
+```{r}
+#Getting Title, Company Name, Location
+my_nodes <- c(
+  '.jobTitle',
+  '.companyName',
+  '.companyLocation',
+  '.date'
+)
+
+names <- c("Title","Company","Location","Posting Date")
+fullds <- tidy_scrap(link=links, nodes = my_nodes, colnames = names)
+```
+
+```{r}
+#Getting link
+scraped_url<- attribute_scrap(links, node = '[data-hide-spinner = "true"]', attr = 'href')
+job_url <- paste0("https://www.indeed.com",scraped_url)
+```
+
+```{r}
+#Deleting those links which are not an open position
+df <- data.frame(fullds,job_url)
+df<-df[!grepl("&p=1&fvj=0|&p=0&fvj=0|a3038631a5eeb3a2&vjs=3", df$job_url),]
+job_url <- df$job_url
+```
+
+```{r}
+#Getting Job Description
+job_description <- scrap(link = job_url, node = '.jobsearch-jobDescriptionText')
+str(job_description)
+```
+
+```{r, error=TRUE}
+#Getting Salary
+Salary<- scrap(link = job_url, node = '.jobsearch-DesktopStickyContainer')
+str(Salary)
+```
+```{r}
+#Extracting salary per hour and removing characters, the result is an atomic vector
+Salary_hourly<- str_remove_all(str_extract(Salary, "\\$[[:digit:]]+.*(an hour|hourly|per hour)") , "\\s+(an hour|hourly|per hour)")
+Salary_hourly<-str_remove_all(Salary_hourly, "[zxcvbnmlkjhgfdsaqwertyuiopZXVBNMLKJHGFDSAQWERTYUIOCP/*()!,% ]")
+Salary_hourly<-str_extract_all(Salary_hourly, "\\$([[:digit:]]+\\,?)+(\\.?[[:digit:]]{0,2})?")
+#Transforming atomic vector to a dataframe
+df_Salary_hourly<-as.data.frame((t(Salary_hourly)))
+df_Salary_hourly<-t(df_Salary_hourly)
+df_Salary_hourly<-str_split_fixed(df_Salary_hourly, ",", -1)
+```
+
+```{r}
+#Extracting salary per week and removing characters, the result is an atomic vector
+Salary_weekly<- str_remove_all(str_extract(Salary, "\\$[[:digit:]]+.*(a week|weekly|per week)") , "\\s+(a week|weekly|per week)")
+Salary_weekly<-str_remove_all(Salary_weekly, "[zxcvbnmlkjhgfdsaqwertyuiopZXVBNMLKJHGFDSAQWERTYUIOCP/*()!,% ]")
+Salary_weekly<-str_extract_all(Salary_weekly, "\\$([[:digit:]]+\\,?)+(\\.?[[:digit:]]{0,2})?")
+#Transforming atomic vector to a dataframe
+df_Salary_weekly<-as.data.frame((t(Salary_weekly)))
+df_Salary_weekly<-t(df_Salary_weekly)
+df_Salary_weekly<-str_split_fixed(df_Salary_weekly, ",", -1)
+```
+
+```{r}
+#Extracting salary per week and removing characters, the result is an atomic vector
+Salary_yearly<- str_remove_all(str_extract(Salary, "\\$[[:digit:]]+.*(a year|yearly)") , "\\s+(a year|yearly)")
+Salary_yearly<-str_remove_all(Salary_yearly, "[zxcvbnmlkjhgfdsaqwertyuiopZXVBNMLKJHGFDSAQWERTYUIOCP/*()!,% ]")
+Salary_yearly<-str_extract_all(Salary_yearly, "\\$([[:digit:]]+\\,?)+(\\.?[[:digit:]]{0,2})?")
+#Transforming atomic vector to a dataframe
+df_Salary_yearly<-as.data.frame((t(Salary_yearly)))
+df_Salary_yearly<-t(df_Salary_yearly)
+df_Salary_yearly<-str_split_fixed(df_Salary_yearly, ",", -1)
+```
+
+
+```{r}
+#Creating Data Frame
+df <- data.frame(df,job_description, df_Salary_hourly,df_Salary_weekly,df_Salary_yearly)
+```
+
+```{r, error=TRUE}
+#Sometimes there are multiple columns repeating the same salary info, we only need the first two columns, because these ones contains the salary range that the companies offer
+df = subset(df, select = -c(x3,x4))
+```
+
+
+```{r, error=TRUE}
+
+
+#Cleaning Salary hourly Columns
+Salary_hourly <- c("X1", "X2") 
+df[salary_columns]<-lapply(df[salary_columns], gsub, pattern = "[^0-9.-]", replacement ="")
+#apply(df[salary_columns], 2, function(y) as.numeric(gsub("[^0-9.-]", "", y)))
+
+#Cleaning Salary weekly Columns
+Salary_weekly <- c("X1.1", "X2.1") 
+df[Salary_weekly]<-lapply(df[Salary_weekly], gsub, pattern = "[^0-9.-]", replacement ="")
+
+
+#Cleaning Salary yearly Columns
+Salary_yearly <- c("X1.2", "X2.2") 
+df[Salary_yearly]<-lapply(df[Salary_yearly], gsub, pattern = "[^0-9.-]", replacement ="")
+
+```
+
+```{r, error=TRUE}
+##Cleaning Salary Columns(only if there are some extra values in column3)
+#df$x3<-gsub("[^0-9.-]", "", as.character(df$X3))
+```
+
+```{r, error=TRUE}
+##Cleaning Salary Columns(only if there are some extra values in column4)
+#df$x4<-gsub("[^0-9.-]", "", as.character(df$X4))
+```
+
+
+```{r}
+#Basic statistics
+```
+
+
+
+```{r}
+#Cleaning Data
+##Deleting unnecessary characters
+df$job_description <- gsub("[\r\n]", " ", as.character(df$job_description))
+df$Posting.Date <- gsub("Posted", " ", as.character(df$Posting.Date))
+df$Posting.Date <- gsub("Employer", " ", as.character(df$Posting.Date))
+df$Posting.Date <- gsub("Active", " ", as.character(df$Posting.Date))
+df
+
+##Converting Date String to Date format
+date_test <- as.numeric(gsub("([0-9]+).*$", "\\1", df$Posting.Date))
+date_test[is.na(date_test)] <- 0
+df$Posting.Date <- as.Date(Sys.Date()) - date_test
+#table(df["Date"])
+#table(date_test)
+#sum(is.na(date_test))
+```
+
+```{r}
+#Renaming Labels in the Data Frame
+df <- df%>%rename(Title = Title,
+            Company = Company,
+            Location = Location,
+            Date = Posting.Date,
+            Description = job_description,
+            Link = job_url)
+```
+
+```{r}
+#Concatenating Columns to create a unique ID with digest
+df$ID <- paste(df$Title,df$Company,df$Location,df$Date,df$Link)
+df$ID <- sapply(df$ID, digest)
+```
+
+```{r}
+#Eliminating leading white space
+df$Description <- trimws(df$Description)
+```
+
+```{r}
+#Eliminating duplicate data from ID
+df<-df[!duplicated(df$ID),]
+```
+
+```{r}
+#Creating filter remote positions
+df$Remote1_Des <-str_detect(df$Description, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+df$Remote2_Tit <-str_detect(df$Title, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+df$Remote3_Loca <-str_detect(df$Location, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+
+df$Concatenate <- paste(df$Remote1_Des, df$Remote2_Tit,df$Remote3_Loca)
+df$Remote <-str_detect(df$Concatenate, "TRUE")
+df$Remote <-with(df, factor(Remote, levels = c("TRUE", "FALSE"), labels = c("Remote", "On-site")))
+
+drop <- c("Remote1_Des","Remote2_Tit","Remote3_Loca","Concatenate")
+df = df[,!(names(df) %in% drop)]
+```
+
+```{r}
+#Creating filter Jobtype
+df$Job_Type1_Des <-str_detect(df$Description, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+df$Job_Type2_Tit <-str_detect(df$Title, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+df$Job_Type3_Loca <-str_detect(df$Location, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+
+df$Concatenate <- paste(df$Job_Type1_Des, df$Job_Type2_Tit,df$Job_Type3_Loca)
+df$Job_Type <-str_detect(df$Concatenate, "TRUE")
+df$Job_Type <-with(df, factor(Job_Type, levels = c("TRUE", "FALSE"), labels = c("Full-time", "Part-time")))
+
+drop <- c("Job_Type1_Des","Job_Type2_Tit","Job_Type3_Loca","Concatenate")
+df = df[,!(names(df) %in% drop)]
+```
+
+```{r}
+#Filtering Data for MSBA, MSIS, MSCM
+#df %>% filter(str_detect(Title, ""))
+```
+
+```{r}
+#Creating a CSV file
+#write.csv(df, file = "dataframe_base_indeed.csv")
+```
+
+```{r}
+#Exporting csv file to drive (server)
+#df1exported<-drive_get("https://drive.google.com/drive/u/0/folders/1eSvOs-wwimwUakClJffVGEPcQZ6iyiK4")
+#drive_upload("dataframe_base_indeed.csv", name = "dataframe_base_indeed", type = "spreadsheet", path = as_id(df1exported))
+```
+
+```{r}
+#Importing dataframe base
+df.base<- read_sheet("https://docs.google.com/spreadsheets/d/1YpEidzZkWjnKd2Zb4sMThoCkVdZjn2q4YXCOln68HCs/edit#gid=589961278")
+df.base<-subset(df.base, select = -1)
+```
+
+```{r}
+#Updating dataframe base with new values from df
+df.base <- rbind(df, df.base)
+```
+
+```{r}
+#Cleaning Data frame base (second time)
+df.base<-df.base[!duplicated(df.base$ID),]
+df.base<-df.base[order(df.base$Date, decreasing = TRUE),]
+```
+
+```{r}
+#Creating a CSV file
+write.csv(df.base, file = "dataframe_base_indeed.csv")
+```
+
+```{r}
+#Updating csv file (Warning: replace original file)
+df1exported<-drive_get("https://drive.google.com/drive/u/0/folders/1eSvOs-wwimwUakClJffVGEPcQZ6iyiK4")
+drive_put("dataframe_base_indeed.csv", name = "dataframe_base_indeed", type = "spreadsheet", path = as_id(df1exported))
+```
