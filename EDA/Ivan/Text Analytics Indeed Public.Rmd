@@ -1,0 +1,142 @@
+---
+title: "Text Analytics WS Indeed"
+output: html_document
+date: "2022-09-08"
+---
+```{r}
+library(tidyverse)
+library(digest)
+library(dplyr)
+library(httr)
+```
+
+```{r}
+df <- httr::GET("") %>% 
+    httr::content()
+df
+```
+
+```{r}
+#Creating filter to find only remote and on-site positions
+#We are looking for the word Remote in three different columns were the company may publish this information, 1- Description, 2- Title and 3- Location
+df$Remote1_Des <-str_detect(df$Description, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+df$Remote2_Tit <-str_detect(df$Title, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+df$Remote3_Loca <-str_detect(df$Location, "remote|Remote|REMOTE|work from home|WORK FROM HOME|work from anywhere")
+
+#Then we concatenate the results to compare the results in the three columns in a new column call Concatenate
+df$Concatenate <- paste(df$Remote1_Des, df$Remote2_Tit,df$Remote3_Loca)
+df$Remote <-str_detect(df$Concatenate, "TRUE")
+
+#If the columns contains at least one TRUE that means the the position is remote, then the rest position will be on-site be default
+df$Remote <-with(df, factor(Remote, levels = c("TRUE", "FALSE"), labels = c("Remote", "On-site")))
+
+#At the end we drop all the columns that we create, leaving only one
+drop <- c("Remote1_Des","Remote2_Tit","Remote3_Loca","Concatenate")
+df = df[,!(names(df) %in% drop)]
+
+```
+
+```{r}
+#Creating filter to find only Hybrid positions
+#We are looking for the word Hybrid in three different columns were the company may publish this information, 1- Description, 2- Title and 3- Location
+df$Hybrid1_Des <-str_detect(df$Description, "hybrid|Hybrid|HYBRID")
+df$Hybrid2_Tit <-str_detect(df$Title, "hybrid|Hybrid|HYBRID")
+df$Hybrid3_Loca <-str_detect(df$Location, "hybrid|Hybrid|HYBRID")
+
+#Then we concatenate the results to compare the results in the three columns in a new column call Concatenate
+df$Concatenate <- paste(df$Hybrid1_Des, df$Hybrid2_Tit,df$Hybrid3_Loca)
+df$Hybrid <-str_detect(df$Concatenate, "TRUE")
+
+#If the columns contains at least one TRUE that means the the position is Hybrid, then the rest positions will be false be default
+df$Hybrid <-with(df, factor(Hybrid, levels = c("TRUE", "FALSE"), labels = c("Hybrid", "False")))
+
+#At the end we drop all the columns that we create, leaving only one
+drop <- c("Hybrid1_Des","Hybrid2_Tit","Hybrid3_Loca","Concatenate")
+df = df[,!(names(df) %in% drop)]
+```
+
+```{r}
+#In order to have only one column with the Work Model that the companies offer we are going to add the Hybrid positions into the column Remote
+df$Remote <- as.character(df$Remote)
+df$Remote[df$Hybrid == "Hybrid"] <- "Hybrid"
+
+#We drop the column Hybrid
+drop <- c("Hybrid")
+df = df[,!(names(df) %in% drop)]
+
+#We rename the column remote to Work Model
+names(df)[names(df) == 'Remote'] <- 'Work Model'
+head(df)
+```
+
+```{r}
+#Creating filter Jobtype
+df$Job_Type1_Des <-str_detect(df$Description, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+df$Job_Type2_Tit <-str_detect(df$Title, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+df$Job_Type3_Loca <-str_detect(df$Location, "Full-time|Full-Time|full-time|FULL-TIME|Fulltime|fulltime|FULLTIME")
+
+df$Concatenate <- paste(df$Job_Type1_Des, df$Job_Type2_Tit,df$Job_Type3_Loca)
+df$Job_Type <-str_detect(df$Concatenate, "TRUE")
+df$Job_Type <-with(df, factor(Job_Type, levels = c("TRUE", "FALSE"), labels = c("Full-time", "Part-time")))
+
+drop <- c("Job_Type1_Des","Job_Type2_Tit","Job_Type3_Loca","Concatenate")
+df = df[,!(names(df) %in% drop)]
+```
+
+
+```{r}
+#Looking for the skills that the companies require
+df$RStudio <-str_detect(df$Description, "RStudio|rstudio|RSTUDIO|R-Studio|r-studio|R-STUDIO|R Studio|r studio|R STUDIO")
+df$Python <-str_detect(df$Description, "Python|python|PYTHON")
+df$SQL <-str_detect(df$Description, "SQL|sql|Postgresql|POSTGRESQL|postgresql|MySQL|mysql|MYSQL")
+df$Tableau <-str_detect(df$Description, "Tableau|tableau|TABLEAU")
+df$PowerBI <-str_detect(df$Description, "PowerBI|powerbi|POWERBI")
+df$Azure <-str_detect(df$Description, "Azure|azure|AZURE")
+df$Excel <-str_detect(df$Description, "Excel|excel|EXCEL")
+df$Talend <-str_detect(df$Description, "Talend|talend|TALEND")
+df$SAS <-str_detect(df$Description, "SAS|sas")
+df$Spark <-str_detect(df$Description, "Spark|spark|SPARK")
+df$Qualtrics <-str_detect(df$Description, "Qualtrics|qualtrics|QUALTRICS")
+df$Domo <-str_detect(df$Description, "Domo|domo|DOMO")
+df$Salesforce <-str_detect(df$Description, "Salesforce|salesforce|SALESFORCE")
+df$SAP <-str_detect(df$Description, "SAP|sap")
+df$Hadoop <-str_detect(df$Description, "Hadoop|hadoop|HADOOP")
+df$Qlik <-str_detect(df$Description, "Qlik|qlik|QLIK")
+df$Looker <-str_detect(df$Description, "Looker|looker|LOOKER")
+df$Zoho <-str_detect(df$Description, "Zoho|zoho|ZOHO")
+df$Stata <-str_detect(df$Description, "Stata|stata|STATA")
+df$Snowflake <-str_detect(df$Description, "Snowflake|snowflake|SNOWFLAKE")
+
+df$RStudio = as.integer(as.logical(df$RStudio))
+df$Python = as.integer(as.logical(df$Python))
+df$SQL = as.integer(as.logical(df$SQL))
+df$Tableau = as.integer(as.logical(df$Tableau))
+df$PowerBI = as.integer(as.logical(df$PowerBI))
+df$Azure = as.integer(as.logical(df$Azure))
+df$Excel = as.integer(as.logical(df$Excel))
+df$Talend = as.integer(as.logical(df$Talend))
+df$SAS = as.integer(as.logical(df$SAS))
+df$Spark = as.integer(as.logical(df$Spark))
+df$Qualtrics = as.integer(as.logical(df$Qualtrics))
+df$Domo = as.integer(as.logical(df$Domo))
+df$Salesforce = as.integer(as.logical(df$Salesforce))
+df$SAP = as.integer(as.logical(df$SAP))
+df$Hadoop = as.integer(as.logical(df$Hadoop))
+df$Qlik = as.integer(as.logical(df$Qlik))
+df$Looker = as.integer(as.logical(df$Looker))
+df$Zoho = as.integer(as.logical(df$Zoho))
+df$Stata = as.integer(as.logical(df$Stata))
+df$Snowflake = as.integer(as.logical(df$Snowflake))
+
+
+```
+
+```{r}
+write.csv(df,"", row.names = FALSE)
+
+
+```
+
+
+
+
