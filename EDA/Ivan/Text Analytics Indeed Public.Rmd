@@ -3,6 +3,7 @@ title: "Text Analytics WS Indeed"
 output: html_document
 date: "2022-09-08"
 ---
+
 ```{r}
 library(tidyverse)
 library(digest)
@@ -83,6 +84,14 @@ drop <- c("Job_Type1_Des","Job_Type2_Tit","Job_Type3_Loca","Concatenate")
 df = df[,!(names(df) %in% drop)]
 ```
 
+```{r}
+#Classifying entries by program
+df <- df %>%
+  mutate(Program = case_when(
+      str_detect(Search, string = "cybersecurity analyst|cybersecurity manager|cybersecurity consultant|chief information security officer|director of security|security systems engineer|security analyst|security manager|security auditor|security architect|security consultant|information security analyst|network security engineer|information security manager|security compliance analyst|penetration tester|vulnerability assessment analyst") ~ "MSCM",
+      str_detect(Search, string = "data engineer|data architect|cloud engineer|data warehouse analyst|data warehouse engineer|data warehouse architect|business intelligence analyst|database administrator|data integration engineer") ~ "MSIS",
+      str_detect(Search, string = "data analyst|data scientist") ~ "MSBA"))
+```
 
 ```{r}
 #Looking for the skills that the companies require
@@ -129,14 +138,44 @@ df$Stata = as.integer(as.logical(df$Stata))
 df$Snowflake = as.integer(as.logical(df$Snowflake))
 
 
+#df1 = df
+#drop <- c("Search","Location","Description","Link", "ID", "Work Model", "Job_Type")
+#df1 = df1[,!(names(df1) %in% drop)]
+#df1 <- transpose(df1)
+```
+
+
+
+```{r}
+#Summing Skills to create a df transposed
+Skills <- c("RStudio", "Python","SQL","PowerBI","Azure","Excel","Talend","SAS","Spark","Qualtrics","Domo","Salesforce","SAP","Hadoop","Qlik","Looker","Zoho","Stata","Snowflake")
+Skills_count <- c(sum(df$RStudio),
+sum(df$Python),
+sum(df$SQL),
+sum(df$PowerBI),
+sum(df$Azure),
+sum(df$Excel),
+sum(df$Talend),
+sum(df$SAS),
+sum(df$Spark),
+sum(df$Qualtrics),
+sum(df$Domo),
+sum(df$Salesforce),
+sum(df$SAP),
+sum(df$Hadoop),
+sum(df$Qlik),
+sum(df$Looker),
+sum(df$Zoho),
+sum(df$Stata),
+sum(df$Snowflake))
+
+df.skills <- data.frame(Skills, Skills_count)
+
+df.skills
 ```
 
 ```{r}
 write.csv(df,"", row.names = FALSE)
-
-
+write.csv(df.skills,"", row.names = FALSE)
 ```
-
-
-
 
