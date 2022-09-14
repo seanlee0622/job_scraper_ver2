@@ -95,7 +95,7 @@ df <- df %>%
 
 ```{r}
 #Looking for the skills that the companies require
-df$RStudio <-str_detect(df$Description, "RStudio|rstudio|RSTUDIO|R-Studio|r-studio|R-STUDIO|R Studio|r studio|R STUDIO")
+df$RStudio <-str_detect(df$Description, "RStudio|rstudio|RSTUDIO|R-Studio|r-studio|R-STUDIO|R Studio|r studio|R STUDIO|R ")
 df$Python <-str_detect(df$Description, "Python|python|PYTHON")
 df$SQL <-str_detect(df$Description, "SQL|sql|Postgresql|POSTGRESQL|postgresql|MySQL|mysql|MYSQL")
 df$Tableau <-str_detect(df$Description, "Tableau|tableau|TABLEAU")
