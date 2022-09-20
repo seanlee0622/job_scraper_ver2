@@ -95,7 +95,7 @@ df <- df %>%
 
 ```{r}
 #Looking for the skills that the companies require
-df$RStudio <-str_detect(df$Description, "RStudio|rstudio|RSTUDIO|R-Studio|r-studio|R-STUDIO|R Studio|r studio|R STUDIO|R ")
+df$R <-str_detect(df$Description, "RStudio|rstudio|RSTUDIO|R-Studio|r-studio|R-STUDIO|R Studio|r studio|R STUDIO|R ")
 df$Python <-str_detect(df$Description, "Python|python|PYTHON")
 df$SQL <-str_detect(df$Description, "SQL|sql|Postgresql|POSTGRESQL|postgresql|MySQL|mysql|MYSQL")
 df$Tableau <-str_detect(df$Description, "Tableau|tableau|TABLEAU")
@@ -116,7 +116,7 @@ df$Zoho <-str_detect(df$Description, "Zoho|zoho|ZOHO")
 df$Stata <-str_detect(df$Description, "Stata|stata|STATA")
 df$Snowflake <-str_detect(df$Description, "Snowflake|snowflake|SNOWFLAKE")
 
-df$RStudio = as.integer(as.logical(df$RStudio))
+df$R = as.integer(as.logical(df$R))
 df$Python = as.integer(as.logical(df$Python))
 df$SQL = as.integer(as.logical(df$SQL))
 df$Tableau = as.integer(as.logical(df$Tableau))
