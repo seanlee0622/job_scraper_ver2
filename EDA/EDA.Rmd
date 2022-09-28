@@ -58,40 +58,40 @@ df
 
 
 ```{python}
-import numpy as np
-import pandas as pd
-import spacy
-
-import spacy
-nlp = spacy.load("en_core_web_sm")
-
-test_text = r.df['Description'].iloc[0]
-text = test_text
-doc = nlp(text)
-tokenized = list(doc)
-print(tokenized)
+# import numpy as np
+# import pandas as pd
+# import spacy
+# 
+# import spacy
+# nlp = spacy.load("en_core_web_sm")
+# 
+# test_text = r.df['Description'].iloc[0]
+# text = test_text
+# doc = nlp(text)
+# tokenized = list(doc)
+# print(tokenized)
 ```
 
-```{python}
-stopwords = spacy.lang.en.stop_words.STOP_WORDS
-text = test_text
-doc = nlp(text)
-filtered = []
-for word in doc:
-    if not word.is_stop:
-        filtered.append(word)
-r.df['Description'] = r.df['Description'].astype(str)
-s = '-'
-df_test = pd.DataFrame(r.df['Description'])
-all_desc = s.join(df_test['Description'])
-text = all_desc
-doc = nlp(text)
-print("="*40)
-str_format = "{:>20}"*2
-print(str_format.format('Text', 'NER'))
-print("="*40)
-for ent in doc.ents:
-    print(str_format.format(ent.text, ent.label_))
+```{python,error=FALSE}
+# stopwords = spacy.lang.en.stop_words.STOP_WORDS
+# text = test_text
+# doc = nlp(text)
+# filtered = []
+# for word in doc:
+#     if not word.is_stop:
+#         filtered.append(word)
+# r.df['Description'] = r.df['Description'].astype(str)
+# s = '-'
+# df_test = pd.DataFrame(r.df['Description'])
+# all_desc = s.join(df_test['Description'])
+# text = all_desc
+# doc = nlp(text)
+# print("="*40)
+# str_format = "{:>20}"*2
+# print(str_format.format('Text', 'NER'))
+# print("="*40)
+# for ent in doc.ents:
+#     print(str_format.format(ent.text, ent.label_))
 ```
 
 
