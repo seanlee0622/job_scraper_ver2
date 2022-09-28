@@ -30,59 +30,64 @@ This capstone project aims to modify and improve the job dashboard so that the s
 * What skills are most demanding related to the majors (MSBA/MSIS/MSCM)?
 
 
-4. Data summaries based on your questions: plots (and more plots),  as well as summary tables.  If, as you are doing EDA, more questions occur to you, then go back and put them into your question list. Make sure  that you include titles, and in the case of plots, axis labels. Additionally, provide a brief interpretation of the plots and tables you have produced.
+### Data summary
 
 ![](./Job Dashboard 1.png)
+
 ![](./Job Dashboard 2.png)
+This dashboard page shows the most wanted skills for data-related jobs,
+
 ![](./Job Dashboard 3.png)
 
 ```{python}
-import numpy as np
-import pandas as pd
-import spacy
-
-df = pd.read_csv('Indeed Jobs in Salt Lake City.csv')
-
-test_text = df['Description'].iloc[0]
-
-nlp = spacy.load('en_core_web_lg')
-text = test_text
-doc = nlp(text)
-tokenized = list(doc)
-print(tokenized)
+# import numpy as np
+# import pandas as pd
+# import spacy
+# 
+# df = pd.read_csv('Indeed Jobs in Salt Lake City.csv')
+# 
+# test_text = df['Description'].iloc[0]
+# 
+# nlp = spacy.load('en_core_web_lg')
+# text = test_text
+# doc = nlp(text)
+# tokenized = list(doc)
+# print(tokenized)
 ```
 
 ```{python}
-stopwords = spacy.lang.en.stop_words.STOP_WORDS
-text = test_text
-doc = nlp(text)
-
-filtered = []
-for word in doc:
-    if not word.is_stop:
-        filtered.append(word)
-
-df['Description'] = df['Description'].astype(str)
-
-s = '-'
-df_test = pd.DataFrame(df['Description'])
-all_desc = s.join(df_test['Description'])
-
-nlp = spacy.load('en_core_web_lg')
-text = all_desc
-doc = nlp(text)
-
-print("="*40)
-str_format = "{:>20}"*2
-print(str_format.format('Text', 'NER'))
-print("="*40)
-for ent in doc.ents:
-    print(str_format.format(ent.text, ent.label_))
+# stopwords = spacy.lang.en.stop_words.STOP_WORDS
+# text = test_text
+# doc = nlp(text)
+# 
+# filtered = []
+# for word in doc:
+#     if not word.is_stop:
+#         filtered.append(word)
+# 
+# df['Description'] = df['Description'].astype(str)
+# 
+# s = '-'
+# df_test = pd.DataFrame(df['Description'])
+# all_desc = s.join(df_test['Description'])
+# 
+# nlp = spacy.load('en_core_web_lg')
+# text = all_desc
+# doc = nlp(text)
+# 
+# print("="*40)
+# str_format = "{:>20}"*2
+# print(str_format.format('Text', 'NER'))
+# print("="*40)
+# for ent in doc.ents:
+#     print(str_format.format(ent.text, ent.label_))
 ```
 
+![](./NER.png)
 
+### Results
 
-5. Include a results section  at the end where you discuss what you have learned about your data and the relationships therein. Have you discovered any data problems? Do some relationships seem particularly strong? How has your EDA influenced your thinking about your analytics approach?
+We have learned that scraping the job's information from various websites is quite challenging. However, we will be focusing on the data we have currently and adding more data as we continue to scrape other job websites. We will work on the Topic Modeling and Named Entity Recognition (NER) Techniques, one of the fundamental processes in Natural Language Processing applications. This helps us easily identify the key elements in a text, like sponsorship, soft skills, hard skills, types of jobs,  technologies, and more. Extracting the main entities in a text helps sort unstructured data and detect important information, which is crucial for dealing with large datasets.
 
 ### Team member contribution
 
