@@ -1,10 +1,11 @@
 ---
 title: "EDA"
-html_document:
-  theme: cerulean
-  code_folding: hide
-  toc: true
-  toc_float: true
+output:
+  html_document:
+    theme: cerulean
+    code_folding: hide
+    toc: true
+    toc_float: true
 date: "2022-09-28"
 ---
 
@@ -50,10 +51,10 @@ This page shows how many jobs has been posted by each program and each company. 
 ```{r}
 df1 <- httr::GET("https://rstudio-connect.business.utah.edu/content/260/data") %>% 
     httr::content()
-df1
+#df1
 
 df <- r_to_py(df1)
-df
+#df
 ```
 
 
@@ -93,7 +94,7 @@ df
 # for ent in doc.ents:
 #     print(str_format.format(ent.text, ent.label_))
 ```
-
+![](./NER.png)
 
 
 ### Results
