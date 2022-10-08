@@ -8,7 +8,12 @@ df <- httr::GET("https://rstudio-connect.business.utah.edu/content/260/data") %>
   httr::content()
 df
 
-
-df <- httr::GET("https://rstudio-connect.business.utah.edu/content/268/data") %>% 
+# dataindeed
+df1 <- httr::GET("https://rstudio-connect.business.utah.edu/content/272/data") %>% 
   httr::content()
-df
+df1
+
+# skillssum
+df2 <- httr::GET("https://rstudio-connect.business.utah.edu/content/273/data") %>% 
+  httr::content()
+df2

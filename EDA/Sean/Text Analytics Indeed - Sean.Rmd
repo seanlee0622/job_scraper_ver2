@@ -175,9 +175,7 @@ sum(df$Snowflake))
 
 df.skills <- data.frame(Skills, Skills_count)
 
-df1.skills <- df.skills
-
-df1.skills
+df.skills_test2 <- df.skills
 
 
 ```
@@ -211,7 +209,7 @@ df
 #Eliminating duplicate data from ID
 df<-df[!duplicated(df$ID),]
 
-df1 <- df
+df_test2 <- df
 ```
 
 ```{r}
@@ -223,8 +221,8 @@ df1 <- df
 
 #write.csv(df1,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/dataindeed1.csv", row.names = FALSE)
 
-write_csv(df1, "/opt/app-data/dataindeed_sean.csv")
-write_csv(df1.skills, "/opt/app-data/skillssum_sean.csv")
+write_csv(df_test2, "/opt/app-data/dataindeed_sean.csv")
+write_csv(df.skills_test2, "/opt/app-data/skillssum_sean.csv")
 
 #df
 ```
