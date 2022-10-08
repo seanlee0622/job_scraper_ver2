@@ -171,6 +171,8 @@ sum(df$Zoho),
 sum(df$Stata),
 sum(df$Snowflake))
 
+
+
 df.skills <- data.frame(Skills, Skills_count)
 
 df.skills
@@ -187,8 +189,6 @@ df.skills
 #df$Salary_hourly <- Salary_hourly
 #gsub('"', '', df$Salary_hourly)
 #df$Salary_hourly <- str_split_fixed(df$Salary_hourly, ',',-1)
-
-
 
 ```
 
@@ -212,10 +212,52 @@ df<-df[!duplicated(df$ID),]
 #write.csv(df,"dataindeed.csv", row.names = FALSE)
 #write.csv(df.skills,"skillssum.csv", row.names = FALSE)
 
-write.csv(df,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/dataindeed.csv", row.names = FALSE)
-write.csv(df.skills,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/skillssum.csv", row.names = FALSE)
+#write.csv(df,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/dataindeed.csv", row.names = FALSE)
+#write.csv(df.skills,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/skillssum.csv", row.names = FALSE)
 
 #write.csv(df1,"C:/Users/ivanm/My Drive/The University Of Utah/THE UOFU/4-Capstone/Web Scraping LinkeIn/dataindeed1.csv", row.names = FALSE)
-df
+
+#write_csv(df, "/opt/app-data/dataindeed.csv")
+#(df.skills, "/opt/app-data/skillssum.csv")
+
+#df
+```
+
+**#Uploading Data to Google Drive**
+```{r}
+#Autentication
+#Getting access to google drive to use it as a server
+#googledrive::drive_auth()
+#Storing token
+#googledrive::drive_token()->access
+#saveRDS(access,"access_go.rds")
+#Getting access to google drive using my token
+drive_auth(token = readRDS("access_go.rds"))
+```
+
+```{r}
+#Writing a csv file using the data from the API
+write.csv(df, file = "dataindeed.csv")
+
+#Uploading file
+#upload <- drive_get("https://drive.google.com/drive/folders/18UkFB1hBjaLycDljkJo3iWdFTw4hLGvu")
+#drive_upload("dataindeed.csv", name= "dataindeed", type = "spreadsheet", path = as_id(upload))
+
+#Updating file
+updatedfile<-drive_get("https://drive.google.com/drive/folders/18UkFB1hBjaLycDljkJo3iWdFTw4hLGvu")
+drive_put("dataindeed.csv", name = "dataindeed", type = "spreadsheet", path = as_id(updatedfile))
+```
+
+```{r}
+library(Microsoft365R)
+od <- get_personal_onedrive()
+
+od$list_items()
+od$list_files("Documentos")
+
+od$upload_file("dataindeed.csv")
+
+
+
 ```
 
