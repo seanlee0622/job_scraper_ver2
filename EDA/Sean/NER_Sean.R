@@ -9,3 +9,6 @@ df <- httr::GET("https://rstudio-connect.business.utah.edu/content/260/data") %>
 df
 
 
+df <- httr::GET("https://rstudio-connect.business.utah.edu/content/268/data") %>% 
+  httr::content()
+df
