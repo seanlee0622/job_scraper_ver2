@@ -1,0 +1,13 @@
+name: ta_testing
+title: TA Testing
+username: u1393990
+account: u1393990
+server: rstudio-connect.business.utah.edu
+hostUrl: https://rstudio-connect.business.utah.edu/__api__
+appId: 263
+bundleId: 1690
+url: https://rstudio-connect.business.utah.edu/content/e823e986-2219-407a-aa51-9a05d548705f/
+when: 1665177842.06544
+lastSyncTime: 1665177842.06545
+asMultiple: FALSE
+asStatic: FALSE
