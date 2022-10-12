@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-10-07"
+---
+
+```{r}
+library(googledrive)
+library(httr)
+library(tidyverse)
+```
+
+```{r}
+#Autentication
+#Getting access to google drive to use it as a server
+#googledrive::drive_auth()
+#Storing token
+#googledrive::drive_token()->access
+#saveRDS(access,"access_go.rds")
+#Getting access to google drive using my token
+drive_auth(token = readRDS("access_go.rds"))
+```
+
+```{r}
+#Getting data from API
+df <- httr::GET("https://rstudio-connect.business.utah.edu/content/260/data") %>% 
+    httr::content()
+df
+```
+
+```{r}
+#Writing a csv file using the data from the API
+write.csv(df, file = "dataindeed.csv")
+```
+
+```{r}
+upload <- drive_get("https://drive.google.com/drive/folders/18UkFB1hBjaLycDljkJo3iWdFTw4hLGvu")
+drive_upload("dataindeed.csv", name= "dataindeed", type = "spreadsheet", path = as_id(upload))
+```
+
