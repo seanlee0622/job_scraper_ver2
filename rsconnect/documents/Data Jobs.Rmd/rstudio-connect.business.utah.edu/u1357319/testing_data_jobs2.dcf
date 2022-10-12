@@ -1,0 +1,13 @@
+name: testing_data_jobs2
+title: Testing Data Jobs
+username: u1357319
+account: u1357319
+server: rstudio-connect.business.utah.edu
+hostUrl: https://rstudio-connect.business.utah.edu/__api__
+appId: 275
+bundleId: 1721
+url: https://rstudio-connect.business.utah.edu/content/a0795b74-4604-43f8-882b-bfcbf8e97055/
+when: 1665606200.3243
+lastSyncTime: 1665606200.32431
+asMultiple: FALSE
+asStatic: FALSE
