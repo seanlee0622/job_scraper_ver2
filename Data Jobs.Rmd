@@ -33,7 +33,17 @@ msis <- c("data engineer", "data architect", "cloud engineer",
           "data warehouse architect","business intelligence analyst",
            "database administrator", "data integration engineer" )
 
-msba <- c("data analyst", "data scientist")
+msba <- c("data analyst", "data scientist","Business Intelligence Analyst","Quantitative Analyst","Data Analytics Consultant","Operations Analyst","Marketing Analyst","Project Manager","Business Analyst",
+"Business Insights Analyst","Power BI Developer","IT Systems Analyst",
+"Transportation Logistics Specialist","Research & Analytics Director","Machine Learning Engineer","Research & Analytics Director","Data Ops","Chief Analytic Officer","Data Learning Engineer","GIS Analyst","Data Visualizers",
+"Chief Technology Officer","Health Analytics","Director Marketing Analytics",
+"Big Data Developer","Data Developer","Clinical Analytics","Big Data Architect","Python Engineer","Database Manager","Data Visualization Analyst",
+"Research Analyst","Data Architect","Statistician","AI Product Manager",
+"Quantitative Developer","Principal Big Data Architect","Customer Analytics",
+"Web Analytics","Analytics Officer","Health Data Analyts","Data Engineer",
+"Database Administrator","Strategic Data Analytics Analyst","Data and Analytics Manager","AI Architect","Data Science Director","Data Manager",
+"Reporting/Analytics","Predictive Analytics","Geospatial Data Scientist",
+"Hadoop Administrator","Python Data Developer")
 
 # empty data frame to return on html parsing error using tryCatch()
 error_df <- data.frame(Search = NA,
