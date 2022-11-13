@@ -33,17 +33,11 @@ msis <- c("data engineer", "data architect", "cloud engineer",
           "data warehouse architect","business intelligence analyst",
            "database administrator", "data integration engineer" )
 
-msba <- c("data analyst", "data scientist","Business Intelligence Analyst","Quantitative Analyst","Data Analytics Consultant","Operations Analyst","Marketing Analyst","Project Manager","Business Analyst",
-"Business Insights Analyst","Power BI Developer","IT Systems Analyst",
-"Transportation Logistics Specialist","Research & Analytics Director","Machine Learning Engineer","Research & Analytics Director","Data Ops","Chief Analytic Officer","Data Learning Engineer","GIS Analyst","Data Visualizers",
-"Chief Technology Officer","Health Analytics","Director Marketing Analytics",
-"Big Data Developer","Data Developer","Clinical Analytics","Big Data Architect","Python Engineer","Database Manager","Data Visualization Analyst",
-"Research Analyst","Data Architect","Statistician","AI Product Manager",
-"Quantitative Developer","Principal Big Data Architect","Customer Analytics",
-"Web Analytics","Analytics Officer","Health Data Analyts","Data Engineer",
-"Database Administrator","Strategic Data Analytics Analyst","Data and Analytics Manager","AI Architect","Data Science Director","Data Manager",
-"Reporting/Analytics","Predictive Analytics","Geospatial Data Scientist",
-"Hadoop Administrator","Python Data Developer")
+msba <- c("data analyst", "data scientist","business intelligence analyst","quantitative analyst","data analytics consultant","operations analyst","marketing analyst","project manager","business analyst",
+"business insights analyst","power bi developer","it systems analyst", "research & analytics director","machine learning engineer","research & analytics director","data ops","chief analytic officer","data learning engineer","gis analyst","data visualizers","chief technology officer","health analytics","director marketing analytics",
+"big data developer","data developer","big data architect","python engineer","database manager","data visualization analyst","research analyst","data architect","statistician","ai product manager",
+"quantitative developer","principal big data architect","customer analytics","web analytics","analytics officer","health data analyst","data engineer","database administrator","strategic data analytics analyst","data and analytics manager","ai architect","data science director","data manager","reporting/analytics","predictive analytics","geospatial data scientist",
+"hadoop administrator","python data developer")
 
 # empty data frame to return on html parsing error using tryCatch()
 error_df <- data.frame(Search = NA,
@@ -291,7 +285,7 @@ df <- df %>%
   mutate(Program = case_when(
       str_detect(Search, string = "cybersecurity analyst|cybersecurity manager|cybersecurity consultant|chief information security officer|director of security|security systems engineer|security analyst|security manager|security auditor|security architect|security consultant|information security analyst|network security engineer|information security manager|security compliance analyst|penetration tester|vulnerability assessment analyst") ~ "MSCM",
       str_detect(Search, string = "data engineer|data architect|cloud engineer|data warehouse analyst|data warehouse engineer|data warehouse architect|business intelligence analyst|database administrator|data integration engineer") ~ "MSIS",
-      str_detect(Search, string = "data analyst|data scientist|Business Intelligence Analyst|Quantitative Analyst|Data Analytics Consultant|Operations Analyst|Marketing Analyst|Project Manager|Business Analyst|Business Insights Analyst|Power BI Developer|IT Systems Analyst|Research & Analytics Director|Machine Learning Engineer|Research & Analytics Director|Data Ops|Chief Analytic Officer|Data Learning Engineer|GIS Analyst|Data Visualizers|Chief Technology Officer|Health Analytics|Big Data Developer|Data Developer|Clinical Analytics|Big Data Architect|Python Engineer|Database Manager|Data Visualization Analyst|Research Analyst|Data Architect|Statistician|AI Product Manager|Quantitative Developer|Principal Big Data Architect|Customer Analytics|Web Analytics|Analytics Officer|Health Data Analyts|Data Engineer|Database Administrator|Strategic Data Analytics Analyst|Data and Analytics Manager|AI Architect|Data Science Director|Data Manager|Reporting/Analytics|Predictive Analytics|Geospatial Data Scientist|Hadoop Administrator|Python Data Developer") ~ "MSBA"))
+      str_detect(Search, string = "data analyst|data scientist|business intelligence analyst|quantitative analyst|data analytics consultant|operations analyst|marketing analyst|project manager|business analyst|business insights analyst|power bi developer|it systems analyst|research & analytics director|machine learning engineer|research & analytics director|data ops|chief analytic officer|data learning engineer|gis analyst|data visualizers|chief technology officer|health analytics|director marketing analytics|big data developer|data developer|big data architect|python engineer|database manager|data visualization analyst|research analyst|data architect|statistician|ai product manager|quantitative developer|principal big data architect|customer analytics|web analytics|analytics officer|health data analyts|data engineer|database administrator|strategic data analytics analyst|data and analytics manager|ai architect|data science director|data manager|reporting/analytics|predictive analytics|geospatial data scientist|hadoop administrator|python data developer") ~ "MSBA"))
 ```
 
 ```{r include=F}
@@ -304,18 +298,68 @@ df$PowerBI <-str_detect(df$Description, "PowerBI|powerbi|POWERBI")
 df$Azure <-str_detect(df$Description, "Azure|azure|AZURE")
 df$Excel <-str_detect(df$Description, "Excel|excel|EXCEL")
 df$Talend <-str_detect(df$Description, "Talend|talend|TALEND")
-df$SAS <-str_detect(df$Description, "SAS|sas")
+df$SAS <-str_detect(df$Description, " SAS | sas ")
 df$Spark <-str_detect(df$Description, "Spark|spark|SPARK")
 df$Qualtrics <-str_detect(df$Description, "Qualtrics|qualtrics|QUALTRICS")
 df$Domo <-str_detect(df$Description, "Domo|domo|DOMO")
 df$Salesforce <-str_detect(df$Description, "Salesforce|salesforce|SALESFORCE")
-df$SAP <-str_detect(df$Description, "SAP|sap")
+df$SAP <-str_detect(df$Description, " SAP | sap ")
 df$Hadoop <-str_detect(df$Description, "Hadoop|hadoop|HADOOP")
 df$Qlik <-str_detect(df$Description, "Qlik|qlik|QLIK")
 df$Looker <-str_detect(df$Description, "Looker|looker|LOOKER")
 df$Zoho <-str_detect(df$Description, "Zoho|zoho|ZOHO")
 df$Stata <-str_detect(df$Description, "Stata|stata|STATA")
 df$Snowflake <-str_detect(df$Description, "Snowflake|snowflake|SNOWFLAKE")
+df$Java <-str_detect(df$Description, "Java|java|JAVA")
+df$Scala <-str_detect(df$Description, "Scala|scala|SCALA")
+df$Git <-str_detect(df$Description, "Git |git |GIT ")
+df$Infor_Birst <-str_detect(df$Description, "Infor Birst|infor birst|INFOR BIRST")
+df$Oracle <-str_detect(df$Description, "Oracle|oracle|ORACLE")
+df$Microstrategy <-str_detect(df$Description, "Microstrategy|microstrategy|MICROSTRATEGY")
+df$Dundas <-str_detect(df$Description, "Dundas|dundas|DUNDAS")
+df$Gooddata <-str_detect(df$Description, "Gooddata|gooddata|GOODDATA")
+df$IBM_cognos <-str_detect(df$Description, "IBM cognos|ibm cognos|IBM COGNOS")
+df$Yellowfin <-str_detect(df$Description, "Yellowfin|yellowfin|YELLOWFIN")
+df$BiG_EVAL <-str_detect(df$Description, "BiG EVAL|big eval|BIG EVAL")
+df$Netsuite <-str_detect(df$Description, "Netsuite|netsuite|NETSUITE")
+df$Pentaho <-str_detect(df$Description, "Pentaho|pentaho|PENTAHO")
+df$Jaspersoft <-str_detect(df$Description, "Jaspersoft|jaspersoft|JASPERSOFT")
+df$BIRT <-str_detect(df$Description, " BIRT | birt ")
+df$Birst <-str_detect(df$Description, "Birst|birst|BIRST")
+df$Netlink <-str_detect(df$Description, "Netlink|netlink|NETLINK")
+df$ClicData <-str_detect(df$Description, "ClicData|clicdata|CLICDATA")
+df$Exago <-str_detect(df$Description, "Exago|exago|EXAGO")
+df$Logility <-str_detect(df$Description, "Logility|logility|LOGILITY")
+df$Databricks <-str_detect(df$Description, "Databricks|databricks|DATABRICKS")
+df$Alteryx <-str_detect(df$Description, "Alteryx|alteryx|ALTERYX")
+df$LongView <-str_detect(df$Description, "LongView|longview|LONGVIEW")
+df$Splunk <-str_detect(df$Description, "Splunk|splunk|SPLUNK")
+df$Dataiku <-str_detect(df$Description, "Dataiku|dataiku|DATAIKU")
+df$RapidMiner <-str_detect(df$Description, "RapidMiner|rapidminer|RAPIDMINER")
+df$G2_Deals <-str_detect(df$Description, "G2 Deals|g2 deals|G2 DEALS")
+df$KNIME <-str_detect(df$Description, "KNIME|knime")
+df$SageMaker <-str_detect(df$Description, "SageMaker|sagemaker|SAGEMAKER")
+df$H2O <-str_detect(df$Description, "H2O|h2o")
+df$DataRobot <-str_detect(df$Description, "DataRobot|datarobot|DATAROBOT")
+df$Spotfire <-str_detect(df$Description, "Spotfire|spotfire|SPOTFIRE")
+df$MATLAB <-str_detect(df$Description, "MATLAB|matlab")
+df$Google_Cloud_AI_Platform <-str_detect(df$Description, "Google Cloud AI Platform|google cloud ai platform|GOOGLE CLOUD AI PLATFORM")
+df$Google_Bigquery <-str_detect(df$Description, "Google Bigquery|google bigquery|GOOGLE BIGQUERY")
+df$Google_Cloud_AutoML <-str_detect(df$Description, "Google Cloud AutoML|google cloud automl|GOOGLE CLOUD AUTOML")
+df$Dundas <-str_detect(df$Description, "Dundas|dundas|DUNDAS")
+df$C_plus_plus <-str_detect(df$Description, " C++ | c++ ")
+df$C_number_sign <-str_detect(df$Description, " C# | c# ")
+df$C <-str_detect(df$Description, " C | c ")
+df$Visual_Basic <-str_detect(df$Description, "Visual Basic|visual basic|VISUAL BASIC")
+df$JavaScript <-str_detect(df$Description, "JavaScript|javascript|JAVASCRIPT")
+df$PHP <-str_detect(df$Description, "PHP|php")
+df$Objective_C <-str_detect(df$Description, "Objective-C|objective-c|OBJECTIVE-C")
+df$Swift <-str_detect(df$Description, "Swift|swift|SWIFT")
+df$Ruby <-str_detect(df$Description, "Ruby|ruby|RUBY")
+df$Fortran <-str_detect(df$Description, "Fortran|fortran|FORTRAN")
+df$Rust <-str_detect(df$Description, "Rust|rust|RUST")
+df$Docker <-str_detect(df$Description, "Docker|docker|DOCKER")
+df$Julia <-str_detect(df$Description, "Julia|julia|JULIA")
 
 df$R = as.integer(as.logical(df$R))
 df$Python = as.integer(as.logical(df$Python))
@@ -337,38 +381,58 @@ df$Looker = as.integer(as.logical(df$Looker))
 df$Zoho = as.integer(as.logical(df$Zoho))
 df$Stata = as.integer(as.logical(df$Stata))
 df$Snowflake = as.integer(as.logical(df$Snowflake))
+df$Java = as.integer(as.logical(df$Java))
+df$Scala = as.integer(as.logical(df$Scala))
+df$Git = as.integer(as.logical(df$Git))
+df$Infor_Birst = as.integer(as.logical(df$Infor_Birst))
+df$Oracle = as.integer(as.logical(df$Oracle))
+df$Microstrategy = as.integer(as.logical(df$Microstrategy))
+df$Dundas = as.integer(as.logical(df$Dundas))
+df$Gooddata = as.integer(as.logical(df$Gooddata))
+df$IBM_cognos = as.integer(as.logical(df$IBM_cognos))
+df$Yellowfin = as.integer(as.logical(df$Yellowfin))
+df$BiG_EVAL = as.integer(as.logical(df$BiG_EVAL))
+df$Netsuite = as.integer(as.logical(df$Netsuite))
+df$Pentaho = as.integer(as.logical(df$Pentaho))
+df$Jaspersoft = as.integer(as.logical(df$Jaspersoft))
+df$BIRT = as.integer(as.logical(df$BIRT))
+df$Birst = as.integer(as.logical(df$Birst))
+df$Netlink = as.integer(as.logical(df$Netlink))
+df$ClicData = as.integer(as.logical(df$ClicData))
+df$Exago = as.integer(as.logical(df$Exago))
+df$Logility = as.integer(as.logical(df$Logility))
+df$Databricks = as.integer(as.logical(df$Databricks))
+df$Alteryx = as.integer(as.logical(df$Alteryx))
+df$LongView = as.integer(as.logical(df$LongView))
+df$Splunk = as.integer(as.logical(df$Splunk))
+df$Dataiku = as.integer(as.logical(df$Dataiku))
+df$RapidMiner = as.integer(as.logical(df$RapidMiner))
+df$G2_Deals = as.integer(as.logical(df$G2_Deals))
+df$KNIME = as.integer(as.logical(df$KNIME))
+df$SageMaker = as.integer(as.logical(df$SageMaker))
+df$H2O = as.integer(as.logical(df$H2O))
+df$DataRobot = as.integer(as.logical(df$DataRobot))
+df$Spotfire = as.integer(as.logical(df$Spotfire))
+df$MATLAB = as.integer(as.logical(df$MATLAB))
+df$Google_Cloud_AI_Platform = as.integer(as.logical(df$Google_Cloud_AI_Platform))
+df$Google_Bigquery = as.integer(as.logical(df$Google_Bigquery))
+df$Google_Cloud_AutoML = as.integer(as.logical(df$Google_Cloud_AutoML))
+df$Dundas = as.integer(as.logical(df$Dundas))
+df$C_plus_plus = as.integer(as.logical(df$C_plus_plus))
+df$C_number_sign = as.integer(as.logical(df$C_number_sign))
+df$C = as.integer(as.logical(df$C))
+df$Visual_Basic = as.integer(as.logical(df$Visual_Basic))
+df$JavaScript = as.integer(as.logical(df$JavaScript))
+df$PHP = as.integer(as.logical(df$PHP))
+df$Objective_C = as.integer(as.logical(df$Objective_C))
+df$Swift = as.integer(as.logical(df$Swift))
+df$Ruby = as.integer(as.logical(df$Ruby))
+df$Fortran = as.integer(as.logical(df$Fortran))
+df$Rust = as.integer(as.logical(df$Rust))
+df$Docker = as.integer(as.logical(df$Docker))
+df$Julia = as.integer(as.logical(df$Julia))
 ```
 
-```{r include=F}
-#Summing Skills to create a df transposed
-Skills <- c("R", "Python","SQL","PowerBI","Azure","Excel","Talend","SAS","Spark","Qualtrics","Domo","Salesforce","SAP","Hadoop","Qlik","Looker","Zoho","Stata","Snowflake")
-
-Skills_count <- c(sum(df$R),
-sum(df$Python),
-sum(df$SQL),
-sum(df$PowerBI),
-sum(df$Azure),
-sum(df$Excel),
-sum(df$Talend),
-sum(df$SAS),
-sum(df$Spark),
-sum(df$Qualtrics),
-sum(df$Domo),
-sum(df$Salesforce),
-sum(df$SAP),
-sum(df$Hadoop),
-sum(df$Qlik),
-sum(df$Looker),
-sum(df$Zoho),
-sum(df$Stata),
-sum(df$Snowflake))
-
-
-
-df.skills <- data.frame(Skills, Skills_count)
-
-#df.skills
-```
 
 ```{r include=F}
 #Eliminating ID from API
