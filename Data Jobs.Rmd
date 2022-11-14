@@ -452,7 +452,6 @@ df<-df[!duplicated(df$ID),]
 ```{r include=F}
 #Writing CSV files
 write_csv(df, "/opt/app-data/job_data.csv")
-write_csv(df.skills, "/opt/app-data/skillssum.csv")
 ```
 
 Column {.tabset .tabset-fade}

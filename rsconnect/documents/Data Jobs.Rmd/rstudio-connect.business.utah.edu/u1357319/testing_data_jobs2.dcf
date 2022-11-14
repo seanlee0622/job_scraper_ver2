@@ -5,9 +5,9 @@ account: u1357319
 server: rstudio-connect.business.utah.edu
 hostUrl: https://rstudio-connect.business.utah.edu/__api__
 appId: 275
-bundleId: 1759
+bundleId: 1767
 url: https://rstudio-connect.business.utah.edu/content/a0795b74-4604-43f8-882b-bfcbf8e97055/
-when: 1667941418.64349
-lastSyncTime: 1667941418.64355
+when: 1668438982.25682
+lastSyncTime: 1668438982.25684
 asMultiple: FALSE
 asStatic: FALSE
